@@ -6,7 +6,7 @@ import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 
-public class FilmRandomGenerator {
+public class FilmDummy {
 
     public static FilmBuilder randomFilm() {
         return create()

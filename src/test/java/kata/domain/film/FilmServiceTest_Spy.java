@@ -4,7 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import static kata.domain.film.FilmRandomGenerator.randomFilm;
+import static kata.domain.film.FilmDummy.randomFilm;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 

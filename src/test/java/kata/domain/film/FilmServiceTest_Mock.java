@@ -6,7 +6,7 @@ import org.mockito.Mockito;
 
 import java.util.Optional;
 
-import static kata.domain.film.FilmRandomGenerator.randomFilm;
+import static kata.domain.film.FilmDummy.randomFilm;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.ArgumentMatchers.anyString;
