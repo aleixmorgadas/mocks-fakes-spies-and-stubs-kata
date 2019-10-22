@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.Mockito.doReturn;
 
-class FilmServiceTest_Mock {
+class FilmServiceTest_MockUsingMockito {
     private FilmRepository filmRepositoryMock;
     private FilmService filmService;
 
