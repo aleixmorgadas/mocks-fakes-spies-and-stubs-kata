@@ -12,4 +12,8 @@ public class FilmService {
     public Optional<Film> findById(String title) {
         return repository.findById(title);
     }
+
+    public void save(Film film) {
+        repository.save(film.title, film);
+    }
 }
