@@ -31,12 +31,12 @@ public class FilmServiceTest_Stub {
     static class FilmRepositoryReturningValue_Stub implements FilmRepository {
 
         @Override
-        public void save(String s, Film film) {
+        public void save(String title, Film film) {
 
         }
 
         @Override
-        public Optional<Film> findById(String s) {
+        public Optional<Film> findById(String title) {
             return Optional.of(randomFilm);
         }
     }
@@ -44,12 +44,12 @@ public class FilmServiceTest_Stub {
     static class FilmRepositoryReturningEmpty_Stub implements FilmRepository {
 
         @Override
-        public void save(String s, Film film) {
+        public void save(String title, Film film) {
 
         }
 
         @Override
-        public Optional<Film> findById(String s) {
+        public Optional<Film> findById(String title) {
             return Optional.empty();
         }
     }
