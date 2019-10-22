@@ -9,9 +9,10 @@ import java.util.Optional;
 import static kata.domain.film.FilmDummy.randomFilm;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doReturn;
 
-class FilmServiceTest_Mock {
+class FilmServiceTest_StubUsingMockito {
     private FilmRepository filmRepositoryMock;
     private FilmService filmService;
 
@@ -26,7 +27,7 @@ class FilmServiceTest_Mock {
         final String title = "el viaje de chihiro";
         final Film film = randomFilm().withTitle(title).build();
 
-        doReturn(Optional.of(film)).when(filmRepositoryMock).findById(title);
+        doReturn(Optional.of(film)).when(filmRepositoryMock).findById(anyString());
 
         assertEquals(film, filmService.findById(title).get());
     }
@@ -35,7 +36,7 @@ class FilmServiceTest_Mock {
     void shouldReturnAnEmptyOptionalWhenItIsNotPresent() {
         final String title = "Title of a film that is not present";
 
-        doReturn(Optional.empty()).when(filmRepositoryMock).findById(title);
+        doReturn(Optional.empty()).when(filmRepositoryMock).findById(anyString());
 
         assertFalse(filmService.findById(title).isPresent());
     }
