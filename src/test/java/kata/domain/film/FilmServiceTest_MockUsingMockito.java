@@ -10,6 +10,7 @@ import static kata.domain.film.FilmDummy.randomFilm;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.verify;
 
 class FilmServiceTest_MockUsingMockito {
     private FilmRepository filmRepositoryMock;
@@ -29,6 +30,8 @@ class FilmServiceTest_MockUsingMockito {
         doReturn(Optional.of(film)).when(filmRepositoryMock).findById(title);
 
         assertEquals(film, filmService.findById(title).get());
+
+        verify(filmRepositoryMock).findById(title);
     }
 
     @Test
@@ -38,5 +41,7 @@ class FilmServiceTest_MockUsingMockito {
         doReturn(Optional.empty()).when(filmRepositoryMock).findById(title);
 
         assertFalse(filmService.findById(title).isPresent());
+
+        verify(filmRepositoryMock).findById(title);
     }
 }
