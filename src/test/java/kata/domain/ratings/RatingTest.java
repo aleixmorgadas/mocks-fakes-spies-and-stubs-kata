@@ -30,13 +30,18 @@ public class RatingTest {
     void ratingOf5IsValid() {
         final Rating rating = Rating.of(title, 5, UserId.of("aUsername"));
 
-        assertEquals("Rating{id='" + title + "-aUsername', title='" + title + "', score=5, userId=UserId{value='aUsername'}}", rating.toString());
+        assertEquals("Rating{id='" + rating.id.toString() + "', " +
+                "title='" + title + "', " +
+                "score=5, userId=UserId{value='aUsername'}}", rating.toString());
     }
 
     @Test
     void ratingOf1IsValid() {
         final Rating rating = Rating.of(title, 1, UserId.of("aUsername"));
 
-        assertEquals("Rating{id='" + title + "-aUsername', title='" + title + "', score=1, userId=UserId{value='aUsername'}}", rating.toString());
+        assertEquals("Rating{id='" + rating.id.toString() + "', " +
+                "title='" + title + "', " +
+                "score=1, " +
+                "userId=UserId{value='aUsername'}}", rating.toString());
     }
 }
