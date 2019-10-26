@@ -38,4 +38,8 @@ public class Rate {
                 ", userId=" + userId +
                 '}';
     }
+
+    public boolean by(UserId userId) {
+        return this.userId.equals(userId);
+    }
 }

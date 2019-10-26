@@ -24,7 +24,7 @@ public class RateDummy {
         return rates;
     }
 
-    public static RateBuilder create() {
+    public static RateBuilder createRate() {
         return new RateBuilder()
                 .withTitle(Faker.instance().funnyName().name())
                 .withScore(randomNumber.nextInt(5) + 1)

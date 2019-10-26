@@ -5,8 +5,8 @@ import kata.domain.user.UserId;
 import kata.domain.user.UserIdDummy;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static kata.domain.rate.RateDummy.createRate;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class RateTest {
     private static final String title = Faker.instance().funnyName().name();
@@ -43,5 +43,23 @@ public class RateTest {
                 "title='" + title + "', " +
                 "score=1, " +
                 "userId=UserId{value='aUsername'}}", rate.toString());
+    }
+
+    @Test
+    void shouldReturnTrueWhenItIsDoneByTheUser() {
+        final UserId userId = UserId.of("aUser");
+
+        final Rate rate = createRate().withUserId(userId).build();
+
+        assertTrue(rate.by(userId));
+    }
+
+    @Test
+    void shouldReturnFalseWhenItIsNotDoneByTheUser() {
+        final UserId userId = UserId.of("aUser");
+
+        final Rate rate = createRate().withUserId(userId).build();
+
+        assertFalse(rate.by(UserIdDummy.randomUserId()));
     }
 }
