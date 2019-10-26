@@ -1,19 +1,19 @@
-package kata.domain.ratings;
+package kata.domain.rate;
 
 import kata.domain.user.UserId;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class RatingIdTest {
+public class RateIdTest {
 
     @Test
     void ratingIdIsComposedOfTitleAndUserId() {
         final String title = "aTitle";
         final UserId userId = UserId.of("aUserId");
 
-        final RatingId ratingId = RatingId.of(title, userId);
+        final RateId rateId = RateId.of(title, userId);
 
-        assertEquals("RatingId{title='aTitle', userId=UserId{value='aUserId'}, value='aTitle--aUserId'}", ratingId.toString());
+        assertEquals("RatingId{title='aTitle', userId=UserId{value='aUserId'}, value='aTitle--aUserId'}", rateId.toString());
     }
 }

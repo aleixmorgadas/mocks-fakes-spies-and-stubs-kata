@@ -1,20 +1,20 @@
-package kata.domain.ratings;
+package kata.domain.rate;
 
 import kata.domain.user.UserId;
 
-public class RatingId {
+public class RateId {
     public final String value;
     private final String title;
     private final UserId userId;
 
-    RatingId(String title, UserId userId) {
+    RateId(String title, UserId userId) {
         this.title = title;
         this.userId = userId;
         this.value = title + "--" + userId.value;
     }
 
-    public static RatingId of(String title, UserId userId) {
-        return new RatingId(title, userId);
+    public static RateId of(String title, UserId userId) {
+        return new RateId(title, userId);
     }
 
     @Override
