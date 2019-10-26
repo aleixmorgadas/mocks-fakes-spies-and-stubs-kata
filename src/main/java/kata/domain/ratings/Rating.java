@@ -1,22 +1,30 @@
 package kata.domain.ratings;
 
+import kata.domain.user.UserId;
+
+import java.util.Objects;
+
 public class Rating {
     static final int MIN_SCORE = 1;
     static final int MAX_SCORE = 5;
 
     public final String title;
-    public final Integer score;
+    public final int score;
+    public final UserId userId;
 
-    Rating(String title, Integer score) {
+    Rating(String title, int score, UserId userId) {
+        Objects.requireNonNull(title);
+        Objects.requireNonNull(userId);
         if (score < MIN_SCORE || score > MAX_SCORE) {
             throw new IllegalArgumentException("score must be between 1 or 5, both included");
         }
         this.title = title;
         this.score = score;
+        this.userId = userId;
     }
 
-    public static Rating of(String title, Integer score) {
-        return new Rating(title, score);
+    public static Rating of(String title, int score, UserId userId) {
+        return new Rating(title, score, userId);
     }
 
     @Override
@@ -24,6 +32,7 @@ public class Rating {
         return "Rating{" +
                 "title='" + title + '\'' +
                 ", score=" + score +
+                ", userId=" + userId +
                 '}';
     }
 }
