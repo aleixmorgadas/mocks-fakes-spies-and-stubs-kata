@@ -8,6 +8,7 @@ public class Rating {
     static final int MIN_SCORE = 1;
     static final int MAX_SCORE = 5;
 
+    public final String id;
     public final String title;
     public final int score;
     public final UserId userId;
@@ -18,6 +19,7 @@ public class Rating {
         if (score < MIN_SCORE || score > MAX_SCORE) {
             throw new IllegalArgumentException("score must be between 1 or 5, both included");
         }
+        this.id = title + "-" + userId.value;
         this.title = title;
         this.score = score;
         this.userId = userId;
@@ -30,7 +32,8 @@ public class Rating {
     @Override
     public String toString() {
         return "Rating{" +
-                "title='" + title + '\'' +
+                "id='" + id + '\'' +
+                ", title='" + title + '\'' +
                 ", score=" + score +
                 ", userId=" + userId +
                 '}';
