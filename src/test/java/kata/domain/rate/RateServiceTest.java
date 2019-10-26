@@ -11,7 +11,6 @@ import org.mockito.Mockito;
 import java.util.List;
 import java.util.Optional;
 
-import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static kata.domain.film.FilmDummy.randomFilm;
 import static kata.domain.rate.RateDummy.createRate;
@@ -95,8 +94,11 @@ class RateServiceTest {
                 .withTitle(theLionKingTitle)
                 .withUserId(userId)
                 .build();
+        final List<Rate> allRates = randomListOfRatesOfSize(10);
+        allRates.add(rateOfFrozenByUser);
+        allRates.add(rateOfTheLionKingByUser);
 
-        doReturn(asList(rateOfFrozenByUser, rateOfTheLionKingByUser)).when(repository).all();
+        doReturn(allRates).when(repository).all();
         doReturn(Optional.of(frozenMovieAsNewerFilm)).when(filmService).findById(frozenTitle);
         doReturn(Optional.of(theLionKingMovieAsOldFilm)).when(filmService).findById(theLionKingTitle);
 
@@ -105,4 +107,6 @@ class RateServiceTest {
 
         assertEquals(singletonList(rateOfFrozenByUser), ratesByUserOfFilmsMadeAtYear2000OrMoreRecent);
     }
+
+
 }
