@@ -4,9 +4,7 @@ import kata.domain.rate.Rate;
 import kata.domain.rate.RateId;
 import kata.domain.rate.RateRepository;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 public class RateRepositoryInMemory implements RateRepository {
     private final Map<RateId, Rate> db = new HashMap<>();
@@ -19,5 +17,10 @@ public class RateRepositoryInMemory implements RateRepository {
     @Override
     public Optional<Rate> findById(RateId id) {
         return Optional.ofNullable(db.get(id));
+    }
+
+    @Override
+    public List<Rate> all() {
+        return new ArrayList<>(db.values());
     }
 }
