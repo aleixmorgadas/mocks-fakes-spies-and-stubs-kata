@@ -1,10 +1,9 @@
 package kata.domain.film;
 
+import kata.support.FilmRepositoryInMemory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
 import static kata.domain.film.FilmDummy.randomFilm;
@@ -36,27 +35,4 @@ public class FilmServiceTest_Fake {
     void shouldReturnAnEmptyOptionalWhenItIsNotPresent() {
         assertFalse(filmService.findById("random-title").isPresent());
     }
-
-    static class FilmRepositoryInMemory implements FilmRepository {
-        private final Map<String, Film> database;
-
-        public FilmRepositoryInMemory(final Map<String, Film> database) {
-            this.database = database;
-        }
-
-        public FilmRepositoryInMemory() {
-            database = new HashMap<>();
-        }
-
-        @Override
-        public void save(String id, Film film) {
-            database.put(id, film);
-        }
-
-        @Override
-        public Optional<Film> findById(String id) {
-            return Optional.ofNullable(database.get(id));
-        }
-    }
-
 }
