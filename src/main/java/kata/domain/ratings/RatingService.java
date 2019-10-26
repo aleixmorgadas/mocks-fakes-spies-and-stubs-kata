@@ -6,4 +6,8 @@ public class RatingService {
     public RatingService(RatingRepository repository) {
         this.repository = repository;
     }
+
+    public void save(Rating rating) {
+        repository.save(rating.id, rating);
+    }
 }
