@@ -13,8 +13,8 @@ import java.util.Optional;
 
 import static java.util.Collections.singletonList;
 import static kata.domain.film.FilmDummy.randomFilm;
-import static kata.domain.rate.RateDummy.createRate;
 import static kata.domain.rate.RateDummy.randomListOfRatesOfSize;
+import static kata.domain.rate.RateDummy.randomRate;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
@@ -56,8 +56,8 @@ class RateServiceTest {
     @Test
     void shouldReturnRatesMadeByAUser() {
         final UserId userId = UserId.of("aUser");
-        final Rate rateOneByUser = createRate().withUserId(userId).build();
-        final Rate rateTwoByUser = createRate().withUserId(userId).build();
+        final Rate rateOneByUser = randomRate().withUserId(userId).build();
+        final Rate rateTwoByUser = randomRate().withUserId(userId).build();
 
         final List<Rate> allRates = randomListOfRatesOfSize(10);
         allRates.add(rateOneByUser);
@@ -86,11 +86,11 @@ class RateServiceTest {
                 .withTitle(frozenTitle)
                 .withReleaseDate(2013)
                 .build();
-        final Rate rateOfFrozenByUser = createRate()
+        final Rate rateOfFrozenByUser = randomRate()
                 .withTitle(frozenTitle)
                 .withUserId(userId)
                 .build();
-        final Rate rateOfTheLionKingByUser = createRate()
+        final Rate rateOfTheLionKingByUser = randomRate()
                 .withTitle(theLionKingTitle)
                 .withUserId(userId)
                 .build();

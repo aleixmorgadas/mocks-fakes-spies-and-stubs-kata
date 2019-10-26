@@ -5,7 +5,7 @@ import kata.domain.user.UserId;
 import kata.domain.user.UserIdDummy;
 import org.junit.jupiter.api.Test;
 
-import static kata.domain.rate.RateDummy.createRate;
+import static kata.domain.rate.RateDummy.randomRate;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class RateTest {
@@ -49,7 +49,7 @@ public class RateTest {
     void shouldReturnTrueWhenItIsDoneByTheUser() {
         final UserId userId = UserId.of("aUser");
 
-        final Rate rate = createRate().withUserId(userId).build();
+        final Rate rate = randomRate().withUserId(userId).build();
 
         assertTrue(rate.by(userId));
     }
@@ -58,7 +58,7 @@ public class RateTest {
     void shouldReturnFalseWhenItIsNotDoneByTheUser() {
         final UserId userId = UserId.of("aUser");
 
-        final Rate rate = createRate().withUserId(userId).build();
+        final Rate rate = randomRate().withUserId(userId).build();
 
         assertFalse(rate.by(UserIdDummy.randomUserId()));
     }

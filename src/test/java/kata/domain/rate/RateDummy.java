@@ -11,24 +11,24 @@ import java.util.Random;
 public class RateDummy {
     private final static Random randomNumber = new Random();
 
-    public static Rate random() {
+    public static RateBuilder randomRate() {
 
-        return Rate.of(Faker.instance().funnyName().name(), randomNumber.nextInt(5) + 1, UserIdDummy.randomUserId());
+        return createRate()
+                .withTitle(Faker.instance().funnyName().name())
+                .withScore(randomNumber.nextInt(5) + 1)
+                .withUserId(UserIdDummy.randomUserId());
     }
 
     public static List<Rate> randomListOfRatesOfSize(int size) {
         final List<Rate> rates = new ArrayList<>();
         for (int i = 0; i < size; i++) {
-            rates.add(random());
+            rates.add(randomRate().build());
         }
         return rates;
     }
 
     public static RateBuilder createRate() {
-        return new RateBuilder()
-                .withTitle(Faker.instance().funnyName().name())
-                .withScore(randomNumber.nextInt(5) + 1)
-                .withUserId(UserIdDummy.randomUserId());
+        return new RateBuilder();
     }
 
     static class RateBuilder {
