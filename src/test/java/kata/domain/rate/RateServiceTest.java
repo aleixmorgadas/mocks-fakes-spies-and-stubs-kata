@@ -1,6 +1,5 @@
 package kata.domain.rate;
 
-import com.github.javafaker.Faker;
 import kata.domain.film.Film;
 import kata.domain.film.FilmService;
 import kata.domain.user.UserId;
@@ -11,7 +10,6 @@ import org.mockito.Mockito;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
@@ -28,8 +26,6 @@ class RateServiceTest {
     private RateRepository repository;
     private FilmService filmService;
     private RateService rateService;
-
-    private Random random = new Random();
 
     @BeforeEach
     public void setup() {
@@ -61,8 +57,8 @@ class RateServiceTest {
     @Test
     void shouldReturnRatesMadeByAUser() {
         final UserId userId = UserId.of("aUser");
-        final Rate rateOneByUser = Rate.of(Faker.instance().funnyName().name(), random.nextInt(5) + 1, userId);
-        final Rate rateTwoByUser = Rate.of(Faker.instance().funnyName().name(), random.nextInt(5) + 1, userId);
+        final Rate rateOneByUser = createRate().withUserId(userId).build();
+        final Rate rateTwoByUser = createRate().withUserId(userId).build();
 
         final List<Rate> allRates = randomListOfRatesOfSize(10);
         allRates.add(rateOneByUser);
