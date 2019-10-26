@@ -1,6 +1,8 @@
 package kata.domain.rate;
 
 import com.github.javafaker.Faker;
+import kata.domain.film.Film;
+import kata.domain.film.FilmService;
 import kata.domain.user.UserId;
 import kata.domain.user.UserIdDummy;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,6 +13,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
+import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
+import static kata.domain.film.FilmDummy.randomFilm;
+import static kata.domain.rate.RateDummy.createRate;
 import static kata.domain.rate.RateDummy.randomListOfRatesOfSize;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -20,6 +26,7 @@ import static org.mockito.Mockito.verify;
 
 class RateServiceTest {
     private RateRepository repository;
+    private FilmService filmService;
     private RateService rateService;
 
     private Random random = new Random();
@@ -27,7 +34,8 @@ class RateServiceTest {
     @BeforeEach
     public void setup() {
         repository = Mockito.mock(RateRepository.class);
-        rateService = new RateService(repository);
+        filmService = Mockito.mock(FilmService.class);
+        rateService = new RateService(repository, filmService);
     }
 
     @Test
@@ -66,5 +74,39 @@ class RateServiceTest {
 
         assertTrue(ratedByUser.contains(rateOneByUser));
         assertTrue(ratedByUser.contains(rateTwoByUser));
+    }
+
+    @Test
+    void shouldReturnTheListOfRatesByAUserForAFilmThatWasProducedAtYearOrMoreRecent() {
+        final UserId userId = UserId.of("aUser");
+        final int productionYear = 2000;
+
+        final String theLionKingTitle = "The Lion King";
+        final Film theLionKingMovieAsOldFilm = randomFilm()
+                .withTitle(theLionKingTitle)
+                .withReleaseDate(1994)
+                .build();
+        final String frozenTitle = "Frozen";
+        final Film frozenMovieAsNewerFilm = randomFilm()
+                .withTitle(frozenTitle)
+                .withReleaseDate(2013)
+                .build();
+        final Rate rateOfFrozenByUser = createRate()
+                .withTitle(frozenTitle)
+                .withUserId(userId)
+                .build();
+        final Rate rateOfTheLionKingByUser = createRate()
+                .withTitle(theLionKingTitle)
+                .withUserId(userId)
+                .build();
+
+        doReturn(asList(rateOfFrozenByUser, rateOfTheLionKingByUser)).when(repository).all();
+        doReturn(Optional.of(frozenMovieAsNewerFilm)).when(filmService).findById(frozenTitle);
+        doReturn(Optional.of(theLionKingMovieAsOldFilm)).when(filmService).findById(theLionKingTitle);
+
+        final List<Rate> ratesByUserOfFilmsMadeAtYear2000OrMoreRecent = rateService
+                .ratedByUserAtYearOrMoreRecent(userId, productionYear);
+
+        assertEquals(singletonList(rateOfFrozenByUser), ratesByUserOfFilmsMadeAtYear2000OrMoreRecent);
     }
 }
