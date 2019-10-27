@@ -19,14 +19,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-class RateServiceTest {
+class RateServiceTest_Mock {
     private RateRepository repository;
     private FilmService filmService;
     private RateService rateService;
     private LikedNotifier likedNotifier;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         repository = Mockito.mock(RateRepository.class);
         filmService = Mockito.mock(FilmService.class);
         likedNotifier = Mockito.mock(LikedNotifier.class);
@@ -34,21 +34,19 @@ class RateServiceTest {
     }
 
     @Test
-    void shouldSaveInTheRepository() {
-        final Rate rate = Rate.of("aTitle", 4, UserIdDummy.randomUserId());
-
-        rateService.save(rate);
-
-        verify(repository).save(rate.id, rate);
-    }
-
-    @Test
     void shouldReceiveFromRepository() {
         final Rate rate = Rate.of("aTitle", 4, UserIdDummy.randomUserId());
+
+        // Setup Expectations
         doReturn(Optional.of(rate)).when(repository).findById(any());
 
+        // Exercise
         final Optional<Rate> ratingFromRepo = rateService.findById(rate.id);
 
+        // Verify expectations
+        verify(repository).findById(rate.id);
+
+        // Verify State
         assertTrue(ratingFromRepo.isPresent());
         assertEquals(rate, ratingFromRepo.get());
     }
@@ -63,10 +61,16 @@ class RateServiceTest {
         allRates.add(rateOneByUser);
         allRates.add(rateTwoByUser);
 
+        // Setup Expectations
         doReturn(allRates).when(repository).all();
 
+        // Exercise
         final List<Rate> ratedByUser = rateService.findByUser(userId);
 
+        // Verify expectations
+        verify(repository, times(1)).all();
+
+        // Verify State
         assertTrue(ratedByUser.contains(rateOneByUser));
         assertTrue(ratedByUser.contains(rateTwoByUser));
     }
@@ -98,25 +102,36 @@ class RateServiceTest {
         allRates.add(rateOfFrozenByUser);
         allRates.add(rateOfTheLionKingByUser);
 
+        // Setup Expectations
         doReturn(allRates).when(repository).all();
         doReturn(Optional.of(frozenMovieAsNewerFilm)).when(filmService).findById(frozenTitle);
         doReturn(Optional.of(theLionKingMovieAsOldFilm)).when(filmService).findById(theLionKingTitle);
 
+        // Exercise
         final List<Rate> ratesByUserOfFilmsMadeAtYear2000OrMoreRecent = rateService
                 .ratedByUserAtYearOrMoreRecent(userId, productionYear);
 
+        // Verify expectations
+        verify(filmService, times(2)).findById(anyString());
+
+        // Verify State
         assertEquals(singletonList(rateOfFrozenByUser), ratesByUserOfFilmsMadeAtYear2000OrMoreRecent);
     }
 
     @Test
     void whenAFilmIsRatedMoreThan10Times_ItShouldNotifyOnceThatItHasBeenLikedBy10DifferentUsers() {
         final String title = "aTitle";
+        final Rate rate = randomRate().withTitle(title).build();
         final List<Rate> ratesForFilm = randomListOfRatesOfSizeForFilm(RateService.RATES_PER_FILM_FOR_NOTIFICATION, title);
 
+        // Setup Expectations
         doReturn(ratesForFilm).when(repository).ratesForFilm(title);
 
-        rateService.save(randomRate().withTitle(title).build());
+        // Exercise
+        rateService.save(rate);
 
+        // Verify expectations
+        verify(repository).save(rate.id, rate);
         verify(likedNotifier, times(1)).notifyForFilm(title);
     }
 }
