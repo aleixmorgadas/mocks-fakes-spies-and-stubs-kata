@@ -12,12 +12,8 @@ import org.mockito.Mockito;
 import java.util.List;
 import java.util.Optional;
 
-import static java.util.Collections.singletonList;
 import static kata.domain.film.FilmDummy.randomFilm;
 import static kata.domain.rate.RateDummy.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.*;
 
 class RateServiceTest_Fake {
     private RateRepository repository;
@@ -41,7 +37,6 @@ class RateServiceTest_Fake {
         rateService.save(rate);
 
         // Verify State
-        assertTrue(repository.findById(rate.id).isPresent());
     }
 
     @Test
@@ -53,8 +48,6 @@ class RateServiceTest_Fake {
         final Optional<Rate> ratingFromRepo = rateService.findById(rate.id);
 
         // Verify State
-        assertTrue(ratingFromRepo.isPresent());
-        assertEquals(rate, ratingFromRepo.get());
     }
 
     @Test
@@ -67,14 +60,12 @@ class RateServiceTest_Fake {
         allRates.add(rateOneByUser);
         allRates.add(rateTwoByUser);
 
-        saveRatesIntoService(allRates);
+        // Setup state
 
         // Exercise
         final List<Rate> ratedByUser = rateService.findByUser(userId);
 
         // Verify State
-        assertTrue(ratedByUser.contains(rateOneByUser));
-        assertTrue(ratedByUser.contains(rateTwoByUser));
     }
 
     @Test
@@ -104,16 +95,13 @@ class RateServiceTest_Fake {
         allRates.add(rateOfFrozenByUser);
         allRates.add(rateOfTheLionKingByUser);
 
-        saveRatesIntoService(allRates);
-        doReturn(Optional.of(frozenMovieAsNewerFilm)).when(filmService).findById(frozenTitle);
-        doReturn(Optional.of(theLionKingMovieAsOldFilm)).when(filmService).findById(theLionKingTitle);
+        // Setup expectations
 
         // Exercise
         final List<Rate> ratesByUserOfFilmsMadeAtYear2000OrMoreRecent = rateService
                 .ratedByUserAtYearOrMoreRecent(userId, productionYear);
 
         // Verify State
-        assertEquals(singletonList(rateOfFrozenByUser), ratesByUserOfFilmsMadeAtYear2000OrMoreRecent);
     }
 
     @Test
@@ -124,7 +112,7 @@ class RateServiceTest_Fake {
         // Exercise
         ratesForFilm.forEach(rateService::save);
 
-        verify(likedNotifier, times(1)).notifyForFilm(title);
+        // Verify Spy
     }
 
     private void saveRatesIntoService(List<Rate> rates) {

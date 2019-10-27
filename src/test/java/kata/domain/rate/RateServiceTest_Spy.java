@@ -10,7 +10,6 @@ import java.util.List;
 
 import static kata.domain.rate.RateDummy.randomListOfRatesOfSizeForFilm;
 import static kata.domain.rate.RateDummy.randomRate;
-import static org.mockito.Mockito.*;
 
 class RateServiceTest_Spy {
     private RateRepository repository;
@@ -34,7 +33,6 @@ class RateServiceTest_Spy {
         rateService.save(rate);
 
         // Verify expectations
-        verify(repository).save(rate.id, rate);
     }
 
     @Test
@@ -43,12 +41,10 @@ class RateServiceTest_Spy {
         final List<Rate> ratesForFilm = randomListOfRatesOfSizeForFilm(RateService.RATES_PER_FILM_FOR_NOTIFICATION, title);
 
         // Setup
-        doReturn(ratesForFilm).when(repository).ratesForFilm(title);
 
         // Exercise
         rateService.save(randomRate().withTitle(title).build());
 
         // Verify it has been called
-        verify(likedNotifier, times(1)).notifyForFilm(title);
     }
 }

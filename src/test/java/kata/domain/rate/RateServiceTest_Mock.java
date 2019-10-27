@@ -11,13 +11,8 @@ import org.mockito.Mockito;
 import java.util.List;
 import java.util.Optional;
 
-import static java.util.Collections.singletonList;
 import static kata.domain.film.FilmDummy.randomFilm;
 import static kata.domain.rate.RateDummy.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
 
 class RateServiceTest_Mock {
     private RateRepository repository;
@@ -38,17 +33,13 @@ class RateServiceTest_Mock {
         final Rate rate = Rate.of("aTitle", 4, UserIdDummy.randomUserId());
 
         // Setup Expectations
-        doReturn(Optional.of(rate)).when(repository).findById(any());
 
         // Exercise
         final Optional<Rate> ratingFromRepo = rateService.findById(rate.id);
 
         // Verify expectations
-        verify(repository).findById(rate.id);
 
         // Verify State
-        assertTrue(ratingFromRepo.isPresent());
-        assertEquals(rate, ratingFromRepo.get());
     }
 
     @Test
@@ -62,17 +53,13 @@ class RateServiceTest_Mock {
         allRates.add(rateTwoByUser);
 
         // Setup Expectations
-        doReturn(allRates).when(repository).all();
 
         // Exercise
         final List<Rate> ratedByUser = rateService.findByUser(userId);
 
         // Verify expectations
-        verify(repository, times(1)).all();
 
         // Verify State
-        assertTrue(ratedByUser.contains(rateOneByUser));
-        assertTrue(ratedByUser.contains(rateTwoByUser));
     }
 
     @Test
@@ -103,19 +90,14 @@ class RateServiceTest_Mock {
         allRates.add(rateOfTheLionKingByUser);
 
         // Setup Expectations
-        doReturn(allRates).when(repository).all();
-        doReturn(Optional.of(frozenMovieAsNewerFilm)).when(filmService).findById(frozenTitle);
-        doReturn(Optional.of(theLionKingMovieAsOldFilm)).when(filmService).findById(theLionKingTitle);
 
         // Exercise
         final List<Rate> ratesByUserOfFilmsMadeAtYear2000OrMoreRecent = rateService
                 .ratedByUserAtYearOrMoreRecent(userId, productionYear);
 
         // Verify expectations
-        verify(filmService, times(2)).findById(anyString());
 
         // Verify State
-        assertEquals(singletonList(rateOfFrozenByUser), ratesByUserOfFilmsMadeAtYear2000OrMoreRecent);
     }
 
     @Test
@@ -125,13 +107,10 @@ class RateServiceTest_Mock {
         final List<Rate> ratesForFilm = randomListOfRatesOfSizeForFilm(RateService.RATES_PER_FILM_FOR_NOTIFICATION, title);
 
         // Setup Expectations
-        doReturn(ratesForFilm).when(repository).ratesForFilm(title);
 
         // Exercise
         rateService.save(rate);
 
         // Verify expectations
-        verify(repository).save(rate.id, rate);
-        verify(likedNotifier, times(1)).notifyForFilm(title);
     }
 }

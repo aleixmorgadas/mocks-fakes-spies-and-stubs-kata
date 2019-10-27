@@ -11,14 +11,9 @@ import org.mockito.Mockito;
 import java.util.List;
 import java.util.Optional;
 
-import static java.util.Collections.singletonList;
 import static kata.domain.film.FilmDummy.randomFilm;
 import static kata.domain.rate.RateDummy.randomListOfRatesOfSize;
 import static kata.domain.rate.RateDummy.randomRate;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doReturn;
 
 class RateServiceTest_Stub {
     private RateRepository repository;
@@ -39,14 +34,11 @@ class RateServiceTest_Stub {
         final Rate rate = Rate.of("aTitle", 4, UserIdDummy.randomUserId());
 
         // Setup
-        doReturn(Optional.of(rate)).when(repository).findById(any());
 
         // Exercise
         final Optional<Rate> ratingFromRepo = rateService.findById(rate.id);
 
         // Verify State
-        assertTrue(ratingFromRepo.isPresent());
-        assertEquals(rate, ratingFromRepo.get());
     }
 
     @Test
@@ -60,14 +52,11 @@ class RateServiceTest_Stub {
         allRates.add(rateTwoByUser);
 
         // Setup
-        doReturn(allRates).when(repository).all();
 
         // Exercise
         final List<Rate> ratedByUser = rateService.findByUser(userId);
 
         // Verify State
-        assertTrue(ratedByUser.contains(rateOneByUser));
-        assertTrue(ratedByUser.contains(rateTwoByUser));
     }
 
     @Test
@@ -98,15 +87,11 @@ class RateServiceTest_Stub {
         allRates.add(rateOfTheLionKingByUser);
 
         // Setup
-        doReturn(allRates).when(repository).all();
-        doReturn(Optional.of(frozenMovieAsNewerFilm)).when(filmService).findById(frozenTitle);
-        doReturn(Optional.of(theLionKingMovieAsOldFilm)).when(filmService).findById(theLionKingTitle);
 
         // Exercise
         final List<Rate> ratesByUserOfFilmsMadeAtYear2000OrMoreRecent = rateService
                 .ratedByUserAtYearOrMoreRecent(userId, productionYear);
 
         // Verify State
-        assertEquals(singletonList(rateOfFrozenByUser), ratesByUserOfFilmsMadeAtYear2000OrMoreRecent);
     }
 }
