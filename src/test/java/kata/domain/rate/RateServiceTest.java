@@ -4,6 +4,7 @@ import kata.domain.film.Film;
 import kata.domain.film.FilmService;
 import kata.domain.user.UserId;
 import kata.domain.user.UserIdDummy;
+import kata.support.RateRepositoryInMemory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -13,24 +14,24 @@ import java.util.Optional;
 
 import static java.util.Collections.singletonList;
 import static kata.domain.film.FilmDummy.randomFilm;
-import static kata.domain.rate.RateDummy.randomListOfRatesOfSize;
-import static kata.domain.rate.RateDummy.randomRate;
+import static kata.domain.rate.RateDummy.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 class RateServiceTest {
     private RateRepository repository;
     private FilmService filmService;
     private RateService rateService;
+    private LikedNotifier likedNotifier;
 
     @BeforeEach
     public void setup() {
         repository = Mockito.mock(RateRepository.class);
         filmService = Mockito.mock(FilmService.class);
-        rateService = new RateService(repository, filmService);
+        likedNotifier = Mockito.mock(LikedNotifier.class);
+        rateService = new RateService(repository, filmService, likedNotifier);
     }
 
     @Test
@@ -108,5 +109,14 @@ class RateServiceTest {
         assertEquals(singletonList(rateOfFrozenByUser), ratesByUserOfFilmsMadeAtYear2000OrMoreRecent);
     }
 
+    @Test
+    void whenAFilmIsRatedMoreThan10Times_ItShouldNotifyOnceThatItHasBeenLikedBy10DifferentUsers() {
+        final String title = "aTitle";
+        final List<Rate> ratesForFilm = randomListOfRatesOfSizeForFilm(RateService.RATES_PER_FILM_FOR_NOTIFICATION + 1, title);
+        final RateService rateService = new RateService(new RateRepositoryInMemory(), filmService, likedNotifier);
 
+        ratesForFilm.forEach(rateService::save);
+
+        verify(likedNotifier, times(1)).notifyForFilm(title);
+    }
 }

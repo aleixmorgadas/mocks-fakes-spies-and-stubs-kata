@@ -27,6 +27,14 @@ public class RateDummy {
         return rates;
     }
 
+    public static List<Rate> randomListOfRatesOfSizeForFilm(int size, String title) {
+        final List<Rate> rates = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            rates.add(randomRate().withTitle(title).build());
+        }
+        return rates;
+    }
+
     public static RateBuilder createRate() {
         return new RateBuilder();
     }

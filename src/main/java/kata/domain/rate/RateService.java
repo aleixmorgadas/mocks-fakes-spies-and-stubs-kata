@@ -9,16 +9,24 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class RateService {
+    static final int RATES_PER_FILM_FOR_NOTIFICATION = 10;
+
     private final RateRepository repository;
     private final FilmService filmService;
+    private final LikedNotifier likedNotifier;
 
-    public RateService(RateRepository repository, FilmService filmService) {
+    public RateService(RateRepository repository, FilmService filmService, LikedNotifier likedNotifier) {
         this.repository = repository;
         this.filmService = filmService;
+        this.likedNotifier = likedNotifier;
     }
 
     public void save(Rate rate) {
         repository.save(rate.id, rate);
+
+        if (repository.ratesForFilm(rate.title).size() == RATES_PER_FILM_FOR_NOTIFICATION) {
+            likedNotifier.notifyForFilm(rate.title);
+        }
     }
 
     public Optional<Rate> findById(RateId id) {
