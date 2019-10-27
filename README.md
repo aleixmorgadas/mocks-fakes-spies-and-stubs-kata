@@ -17,3 +17,4 @@
 ## Supportive docs
 
 - [Business Definitions](docs/BusinessDefinitions.md)
+- [Kata Slides](https://docs.google.com/presentation/d/1RTIjilK8zIiKfilBqD8x9UavBJFn089ORiLlBBgjidg)
