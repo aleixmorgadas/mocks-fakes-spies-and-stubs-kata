@@ -26,7 +26,7 @@ class RateServiceTest_Fake {
     private LikedNotifier likedNotifier;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         repository = new RateRepositoryInMemory();
         filmService = Mockito.mock(FilmService.class);
         likedNotifier = Mockito.mock(LikedNotifier.class);

@@ -27,7 +27,7 @@ class RateServiceTest_Stub {
     private LikedNotifier likedNotifier;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         repository = Mockito.mock(RateRepository.class);
         filmService = Mockito.mock(FilmService.class);
         likedNotifier = Mockito.mock(LikedNotifier.class);
