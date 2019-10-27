@@ -16,8 +16,20 @@
 
 ## How is the kata structured ?
 
-- `kata.domain.film`: Test-Doubles examples made with Mockito and hand-made examples
+- `kata.domain.film`: Test-Doubles examples made with Mockito and hand-made examples.
+- `kata.domain.user`: Support domain to represent the UserId
 - `kata.domain.rate`: Actual kata.
+- `kata.support`: InMemoryRepositories
+
+## How to do the Kata?
+
+1. Check the tests at `kata.domain.rate`.
+ 
+    You will see the `RateServiceTest_<Test Double Type>`. Implement each Test following the named pattern. 
+    :info: Remember that using two different Test Double types in the same test is allowed.  
+    
+2. After you implemented all tests using different Test Double types, change the implementation of `RateService`. 
+The goal is to break see which tests break and which aren't. So, you notice which Test Doubles are safer when changing the implementation.
 
 ### FAQ
 
