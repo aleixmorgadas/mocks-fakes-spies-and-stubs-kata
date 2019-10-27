@@ -14,6 +14,21 @@
 2. Check all tests are green
     `./gradlew test` 
 
+## How is the kata structured ?
+
+- `kata.domain.film`: Test-Doubles examples made with Mockito and hand-made examples
+- `kata.domain.rate`: Actual kata.
+
+### FAQ
+
+- Should I expect miss behaviour in the code?
+
+No, but maybe there are bugs in the code. Feel free to open an issue or talk with me for clarification.
+
+- Should I only use **one** Test-Double type in each class?
+
+No, it is expected that you have to use a combination of two or more test-double types to achieve the desired behaviour.
+
 ## Supportive docs
 
 - [Business Definitions](docs/BusinessDefinitions.md)
