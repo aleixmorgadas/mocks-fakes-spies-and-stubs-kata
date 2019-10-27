@@ -4,7 +4,6 @@ import kata.domain.film.Film;
 import kata.domain.film.FilmService;
 import kata.domain.user.UserId;
 import kata.domain.user.UserIdDummy;
-import kata.support.RateRepositoryInMemory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -112,10 +111,11 @@ class RateServiceTest {
     @Test
     void whenAFilmIsRatedMoreThan10Times_ItShouldNotifyOnceThatItHasBeenLikedBy10DifferentUsers() {
         final String title = "aTitle";
-        final List<Rate> ratesForFilm = randomListOfRatesOfSizeForFilm(RateService.RATES_PER_FILM_FOR_NOTIFICATION + 1, title);
-        final RateService rateService = new RateService(new RateRepositoryInMemory(), filmService, likedNotifier);
+        final List<Rate> ratesForFilm = randomListOfRatesOfSizeForFilm(RateService.RATES_PER_FILM_FOR_NOTIFICATION, title);
 
-        ratesForFilm.forEach(rateService::save);
+        doReturn(ratesForFilm).when(repository).ratesForFilm(title);
+
+        rateService.save(randomRate().withTitle(title).build());
 
         verify(likedNotifier, times(1)).notifyForFilm(title);
     }
