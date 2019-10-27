@@ -29,7 +29,7 @@
     :info: Remember that using two different Test Double types in the same test is allowed.  
     
 2. After you implemented all tests using different Test Double types, change the implementation of `RateService`. 
-The goal is to break see which tests break and which aren't. So, you notice which Test Doubles are safer when changing the implementation.
+The goal is to **break the code and see which tests become red and which keep green**. So, you notice which Test Doubles are safer when changing the implementation.
 
 ### FAQ
 
