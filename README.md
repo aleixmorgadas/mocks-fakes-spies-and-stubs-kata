@@ -4,7 +4,7 @@
 
 - Java 8
 - Gradle
-- An IDE, I would suggest IntelliJ
+- An IDE, I would suggest IntelliJ. For IntelliJ users, check that you are using the latest version
 
 ## Setup Environment
 
